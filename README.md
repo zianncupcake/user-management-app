@@ -4,9 +4,9 @@
 A full stack user management platform for user creation, deletion, and updating
 
 ## Tech stack
-NextJS, Tailwind CSS, Javascript, HTML. Axios
-Go, Postgresql
-Containerization of frontend, backend and db using Docker
+- NextJS, Tailwind CSS, Javascript, HTML. Axios
+- Go, Postgresql
+- Containerization of frontend, backend and db using Docker
 
 ## Demo
 
