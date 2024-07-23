@@ -53,7 +53,7 @@ func main() {
 	//getUsers(db) is a handler function that will process requests to this route. db passed inside to allow database interaction within the handler
 	router.HandleFunc("/api/go/users", getUsers(db)).Methods("GET")
 	router.HandleFunc("/api/go/users", createUser(db)).Methods("POST")
-	router.HandleFunc("/api/go/users/{id}", getUser(db)).Methods("POST")
+	router.HandleFunc("/api/go/users/{id}", getUser(db)).Methods("GET")
 	router.HandleFunc("/api/go/users/{id}", updateUser(db)).Methods("PUT")
 	router.HandleFunc("/api/go/users/{id}", deleteUser(db)).Methods("DELETE")
 
