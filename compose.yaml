@@ -1,4 +1,20 @@
+#In this setup, Docker Compose manages both services, allowing them to communicate with each other (e.g., goapp connecting to db via DATABASE_URL). 
 services:
+  goapp:
+    #Specifies the name of the container for this service. It helps identify and manage the container easily.
+    container_name: goapp
+    # Defines the Docker image to use for the container. This image should be tagged with 1.0.0. If the image does not exist locally, Docker Compose will build it according to the build instructions.
+    image: goapp:1.0.0
+    build:
+      #Sets the build context, which is the directory where Docker will look for the Dockerfile and the files needed to build the image. 
+      context: ./backend
+      dockerfile: go.dockerfile
+    #Defines environment variables for the container. For example, DATABASE_URL is set to connect to the db service.
+    environment:
+      DATABASE_URL: 'postgres://postgres:postgres@db:5432/postgres?sslmode=disable'
+    #port 8000 on the host machine will be forwarded to port 8000 on the goapp container.  
+    ports:
+    - '8000:8000'
   db:
     container_name: db
     image: postgres:13
@@ -8,8 +24,13 @@ services:
       POSTGRES_DB: postgres
     ports:
       - 5432:5432
+    #Mounts a volume to persist data. pgdata:/var/lib/postgresql/data means that the pgdata volume is mounted to the /var/lib/postgresql/data directory inside the container, ensuring that database data is persisted between container restarts.
     volumes:
       - pgdata:/var/lib/postgresql/data
 
 volumes:
   pgdata: {}
+
+#goapp Service: Runs a Go application aka a custom application service that represents your own code that you want to run in a docker container, building from a specific Dockerfile and exposing it on port 8000. create a docker image from the source code
+#db Service: Runs a PostgreSQL database, exposing it on port 5432 and using a named volume to persist data. using a pre built image is common for services like databases, dont need to modify the image
+
