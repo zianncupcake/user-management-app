@@ -1,5 +1,17 @@
 #In this setup, Docker Compose manages both services, allowing them to communicate with each other (e.g., goapp connecting to db via DATABASE_URL). 
 services:
+  nextapp:
+    container_name: nextapp
+    image: nextapp:1.0.0
+    build:
+      context: ./frontend
+      dockerfile: next.dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - goapp
   goapp:
     #Specifies the name of the container for this service. It helps identify and manage the container easily.
     container_name: goapp

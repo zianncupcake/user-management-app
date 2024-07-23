@@ -86,7 +86,7 @@ func getUsers(db *sql.DB) http.HandlerFunc {
 			//& used to pass the memory of addresses
 			// u need addresses because we are directly modifying the original variables. not copies
 			//syntax to make it concise. assign err to rows.scan output. if there is error then log fatal
-			if err := rows.Scan(&u.Id, &u.Name, &u.Name); err != nil {
+			if err := rows.Scan(&u.Id, &u.Name, &u.Email); err != nil {
 				log.Fatal(err)
 			}
 			users = append(users, u)
@@ -190,9 +190,6 @@ func deleteUser(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-
-
-
 //explanation on http headers and content-type
 //http headers are key value pairs sent between the client and the server with http requests and responses. provide metadata about the request or reponse e.g. content type, length, encoding
 //content-type header indicates the media type of the resource being sent to the client (web browser / mobile app...). when client receives response, it looks at the content-type header to determine how to interpret the response body 
@@ -204,8 +201,8 @@ func enableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		//set cors headers --> set http headers for the response
 		w.Header().Set("Access-Control-Allow-Origin", "*") //Allow requests from any origin
-		w.Header().Set("Access-Control-Allow-Origin", "GET, POST, PUT, DELETE, OPTIONS") //Specifies allowed http methods
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization") //specifies allowed headers
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS") //Specifies allowed http methods
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type") //specifies allowed headers
 
 		//check if the request is for cors preflight
 		//check if http method is options --> determine if actual request is safe to send
